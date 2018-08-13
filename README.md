@@ -1,4 +1,4 @@
-# swagger-java-client
+# Java Client SDK
 
 ## Requirements
 
@@ -70,19 +70,19 @@ public class DefaultApiExample {
            String response = api.getAuthUrl(redirectUri, Configuration.AuthUrls.MLA);
     }
     
-    private static void defaultGet() throws ApiException {
+    private static void GET() throws ApiException {
             String resource = "{api_resource}";
             Object response = api.defaultGet(resource);
     }
     
-    public void defaultPost() throws ApiException {
+    public void POST() throws ApiException {
             String resource = "{api_resource}";
             Object body = new Object();
             body.field("{some_value}");
             Object response = api.defaultPost(accessToken, resource, body);
     }
         
-    public void defaultPut() throws ApiException {
+    public void PUT() throws ApiException {
                 String id = "{object_id}";
                 String resource = "{api_resource}";
                 Object body = new Object();
@@ -90,7 +90,7 @@ public class DefaultApiExample {
                 Object response = api.defaultPut(resource, id, accessToken, body);
     }
     
-    public void defaultDeleteTest() throws ApiException {
+    public void DELETE() throws ApiException {
                  String id = "{object_id}";
                  String resource = "{api_resource}";
                  Object response = api.defaultDelete(resource, id, accessToken);
