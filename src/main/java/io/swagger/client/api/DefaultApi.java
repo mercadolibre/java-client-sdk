@@ -36,6 +36,24 @@ public class DefaultApi {
         this.apiClient = apiClient;
     }
 
+    public DefaultApi(Long clientId, String clientSecret) {
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
+    }
+
+    public DefaultApi(Long clientId, String clientSecret, String accessToken) {
+        this.accessToken = accessToken;
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
+    }
+
+    public DefaultApi(Long clientId, String clientSecret, String accessToken, String refreshToken) {
+        this.accessToken = accessToken;
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
+        this.refreshToken = refreshToken;
+    }
+
     public ApiClient getApiClient() {
         return apiClient;
     }
@@ -75,15 +93,107 @@ public class DefaultApi {
      * @return the authorization URL
      */
     public String getAuthUrl(String callback, Configuration.AuthUrls authUrl) {
+        StringBuilder sb = new StringBuilder();
         try {
-            return authUrl.getValue() + "/authorization?response_type=code&client_id="
-                    + clientId
-                    + "&redirect_uri="
-                    + URLEncoder.encode(callback, "UTF-8");
+            sb.append(authUrl.getValue());
+            sb.append("/authorization?response_type=code&client_id=");
+            sb.append(clientId);
+            sb.append("&redirect_uri=");
+            sb.append(URLEncoder.encode(callback, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            return authUrl + "/authorization?response_type=code&client_id="
-                    + clientId + "&redirect_uri=" + callback;
+            sb.append(authUrl);
+            sb.append("/authorization?response_type=code&client_id=");
+            sb.append(clientId);
+            sb.append("&redirect_uri=");
+            sb.append(callback);
         }
+        return sb.toString();
+    }
+
+    /**
+     * Returns access token.
+     *
+     * @param code        The code obtained from getAuthUrl step. (required)
+     * @param redirectUri The Uri you redirect the user after auth. (required)
+     * @return AccessToken
+     * @throws ApiException if fails to make API call
+     */
+
+/**/
+    public Object authorize(String code, String redirectUri) throws ApiException {
+        Object localVarPostBody = "";
+
+        // create path and map variables
+        String localVarPath = "/oauth/token";
+
+        // query params
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+
+        localVarQueryParams.addAll(apiClient.parameterToPairs("", "grant_type", "authorization_code"));
+        localVarQueryParams.addAll(apiClient.parameterToPairs("", "client_id", String.valueOf(clientId)));
+        localVarQueryParams.addAll(apiClient.parameterToPairs("", "client_secret", clientSecret));
+        localVarQueryParams.addAll(apiClient.parameterToPairs("", "code", code));
+        localVarQueryParams.addAll(apiClient.parameterToPairs("", "redirect_uri", redirectUri));
+
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+
+        final String[] localVarContentTypes = {
+                "application/json"
+        };
+        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[]{"oAuth2"};
+
+        GenericType<Object> localVarReturnType = new GenericType<Object>() {
+        };
+        return apiClient.invokeAPI(localVarPath, "POST", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+
+    /**
+     * Returns refresh token.
+     *
+     * @return AccessToken
+     * @throws ApiException if fails to make API call
+     */
+    public RefreshToken refreshAccessToken() throws ApiException {
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/oauth/token";
+
+        // query params
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        localVarQueryParams.addAll(apiClient.parameterToPairs("", "grant_type", "refresh_token"));
+        localVarQueryParams.addAll(apiClient.parameterToPairs("", "client_id", String.valueOf(this.clientId)));
+        localVarQueryParams.addAll(apiClient.parameterToPairs("", "client_secret", this.clientSecret));
+        localVarQueryParams.addAll(apiClient.parameterToPairs("", "refresh_token", this.refreshToken));
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+
+        final String[] localVarContentTypes = {
+                "application/json"
+        };
+        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+        String[] localVarAuthNames = new String[]{};
+
+        GenericType<RefreshToken> localVarReturnType = new GenericType<RefreshToken>() {
+        };
+
+        return apiClient.invokeAPI(localVarPath, "POST", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
     }
 
     /**
