@@ -21,24 +21,16 @@ mvn deploy
 Refer to the [official documentation](https://maven.apache.org/plugins/maven-deploy-plugin/usage.html) for more information.
 
 ### Maven users
-
+****
 Add this dependency to your project's POM:
 
 ```xml
 <dependency>
-    <groupId>io.swagger</groupId>
-    <artifactId>swagger-java-client</artifactId>
-    <version>1.0.0</version>
+    <groupId>io.mercadolibre</groupId>
+    <artifactId>java-client-sdk</artifactId>
+    <version>5.0.0</version>
     <scope>compile</scope>
 </dependency>
-```
-
-### Gradle users
-
-Add this dependency to your project's build file:
-
-```groovy
-compile "io.swagger:swagger-java-client:1.0.0"
 ```
 
 ### Others
@@ -49,7 +41,7 @@ At first generate the JAR by executing:
 
 Then manually install the following JARs:
 
-* target/swagger-java-client-1.0.0.jar
+* target/java-client-sdk-master.jar
 * target/lib/*.jar
 
 ## Getting Started
@@ -58,28 +50,52 @@ Please follow the [installation](#installation) instruction and execute the foll
 
 ```java
 
-import io.swagger.client.*;
-import io.swagger.client.auth.*;
-import io.swagger.client.model.*;
+import io.swagger.client.ApiException;
 import io.swagger.client.api.DefaultApi;
+import io.swagger.client.model.*;
 
-import java.io.File;
-import java.util.*;
 
 public class DefaultApiExample {
 
-    public static void main(String[] args) {
-        
-        DefaultApi apiInstance = new DefaultApi();
-        String categoryId = "categoryId_example"; // String | The category ID.
-        try {
-            Object result = apiInstance.categoriesCategoryIdAttributesGet(categoryId);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling DefaultApi#categoriesCategoryIdAttributesGet");
-            e.printStackTrace();
-        }
+/*Replace with your application Client Id, Client Secret and RedirectUri*/
+
+    Long ClientId = 0;  
+    String SecretKey = "abc123";
+    String redirectUri = "https://your_url.com";
+    
+    private final DefaultApi api = new DefaultApi();
+    
+    private static void getAuthUrl() throws UnsupportedEncodingException {
+           DefaultApi api = new DefaultApi(clientId, clientSecret);
+           String response = api.getAuthUrl(redirectUri, Configuration.AuthUrls.MLA);
     }
+    
+    private static void defaultGet() throws ApiException {
+            String resource = "{api_resource}";
+            Object response = api.defaultGet(resource);
+    }
+    
+    public void defaultPost() throws ApiException {
+            String resource = "{api_resource}";
+            Object body = new Object();
+            body.field("{some_value}");
+            Object response = api.defaultPost(accessToken, resource, body);
+    }
+        
+    public void defaultPut() throws ApiException {
+                String id = "{object_id}";
+                String resource = "{api_resource}";
+                Object body = new Object();
+                body.field("{some_value}");
+                Object response = api.defaultPut(resource, id, accessToken, body);
+    }
+    
+    public void defaultDeleteTest() throws ApiException {
+                 String id = "{object_id}";
+                 String resource = "{api_resource}";
+                 Object response = api.defaultDelete(resource, id, accessToken);
+    }
+
 }
 
 ```

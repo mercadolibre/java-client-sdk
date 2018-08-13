@@ -91,7 +91,7 @@ public class DefaultApi {
      * @param authUrl:  The authorization URL. Get from Meli.AuthUrls
      * @return the authorization URL
      */
-    public String getAuthUrl(String callback, Configuration.AuthUrls authUrl) {
+    public String getAuthUrl(String callback, Configuration.AuthUrls authUrl) throws UnsupportedEncodingException {
         StringBuilder sb = new StringBuilder();
         try {
             sb.append(authUrl.getValue());
