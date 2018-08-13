@@ -35,22 +35,10 @@ public class DefaultApi {
         this.apiClient = apiClient;
     }
 
-    public DefaultApi(Long clientId, String clientSecret) {
+    public DefaultApi(ApiClient apiClient, Long clientId, String clientSecret) {
+        this.apiClient = apiClient;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
-    }
-
-    public DefaultApi(Long clientId, String clientSecret, String accessToken) {
-        this.accessToken = accessToken;
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
-    }
-
-    public DefaultApi(Long clientId, String clientSecret, String accessToken, String refreshToken) {
-        this.accessToken = accessToken;
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
-        this.refreshToken = refreshToken;
     }
 
     public ApiClient getApiClient() {
@@ -91,7 +79,7 @@ public class DefaultApi {
      * @param authUrl:  The authorization URL. Get from Meli.AuthUrls
      * @return the authorization URL
      */
-    public String getAuthUrl(String callback, Configuration.AuthUrls authUrl) throws UnsupportedEncodingException {
+    public String getAuthUrl(String callback, Configuration.AuthUrls authUrl) {
         StringBuilder sb = new StringBuilder();
         try {
             sb.append(authUrl.getValue());
@@ -120,7 +108,7 @@ public class DefaultApi {
 
 /**/
     public Object authorize(String code, String redirectUri) throws ApiException {
-        Object localVarPostBody = "";
+        Object localVarPostBody = null;
 
         // create path and map variables
         String localVarPath = "/oauth/token";
@@ -162,7 +150,7 @@ public class DefaultApi {
      * @return AccessToken
      * @throws ApiException if fails to make API call
      */
-    public RefreshToken refreshAccessToken() throws ApiException {
+    public RefreshToken refreshAccessToken(String refreshToken) throws ApiException {
         Object localVarPostBody = null;
 
         // create path and map variables
@@ -174,9 +162,9 @@ public class DefaultApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         localVarQueryParams.addAll(apiClient.parameterToPairs("", "grant_type", "refresh_token"));
-        localVarQueryParams.addAll(apiClient.parameterToPairs("", "client_id", String.valueOf(this.clientId)));
-        localVarQueryParams.addAll(apiClient.parameterToPairs("", "client_secret", this.clientSecret));
-        localVarQueryParams.addAll(apiClient.parameterToPairs("", "refresh_token", this.refreshToken));
+        localVarQueryParams.addAll(apiClient.parameterToPairs("", "client_id", String.valueOf(clientId)));
+        localVarQueryParams.addAll(apiClient.parameterToPairs("", "client_secret", clientSecret));
+        localVarQueryParams.addAll(apiClient.parameterToPairs("", "refresh_token", refreshToken));
 
         final String[] localVarAccepts = {
                 "application/json"

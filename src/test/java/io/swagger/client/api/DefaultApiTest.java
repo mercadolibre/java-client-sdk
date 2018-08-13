@@ -13,6 +13,7 @@
 
 package io.swagger.client.api;
 
+import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
 import io.swagger.client.Configuration;
 import io.swagger.client.model.*;
@@ -39,7 +40,6 @@ public class DefaultApiTest {
     private final Long clientId = null;
     private final String clientSecret = null;
     private final String redirectUri = null;
-    private final String code = null;
     private final String accessToken = null;
     private final DefaultApi api = new DefaultApi();
 
@@ -50,8 +50,8 @@ public class DefaultApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
-    public void getAuthUrlTest() throws ApiException, UnsupportedEncodingException {
-        DefaultApi api = new DefaultApi(clientId, clientSecret);
+    public void getAuthUrlTest() {
+        DefaultApi api = new DefaultApi(new ApiClient(), clientId, clientSecret);
         String response = api.getAuthUrl(redirectUri, Configuration.AuthUrls.MLA);
         StringBuilder sb = new StringBuilder();
         sb.append(Configuration.AuthUrls.MLA.getValue());
@@ -65,8 +65,24 @@ public class DefaultApiTest {
         }
         assertNotNull(response);
         assertEquals(sb.toString(), response);
+        System.out.println(response);
     }
 
+    @Test
+    public void authorizeTest() throws ApiException {
+        DefaultApi api = new DefaultApi(new ApiClient(), clientId, clientSecret);
+        String code = null;
+        Object token = api.authorize(code, redirectUri);
+        System.out.println(token);
+    }
+
+    @Test
+    public void refreshTokenTest() throws ApiException {
+        DefaultApi api = new DefaultApi(new ApiClient(), clientId, clientSecret);
+        String refreshToken = null;
+        RefreshToken response = api.refreshAccessToken(refreshToken);
+        System.out.println(response);
+    }
     /**
      * Returns response from any specified resource.
      *
