@@ -1,0 +1,241 @@
+# swagger-java-client
+
+## Requirements
+
+Building the API client library requires [Maven](https://maven.apache.org/) to be installed.
+
+## Installation
+
+To install the API client library to your local Maven repository, simply execute:
+
+```shell
+mvn install
+```
+
+To deploy it to a remote Maven repository instead, configure the settings of the repository and execute:
+
+```shell
+mvn deploy
+```
+
+Refer to the [official documentation](https://maven.apache.org/plugins/maven-deploy-plugin/usage.html) for more information.
+
+### Maven users
+
+Add this dependency to your project's POM:
+
+```xml
+<dependency>
+    <groupId>io.swagger</groupId>
+    <artifactId>swagger-java-client</artifactId>
+    <version>1.0.0</version>
+    <scope>compile</scope>
+</dependency>
+```
+
+### Gradle users
+
+Add this dependency to your project's build file:
+
+```groovy
+compile "io.swagger:swagger-java-client:1.0.0"
+```
+
+### Others
+
+At first generate the JAR by executing:
+
+    mvn package
+
+Then manually install the following JARs:
+
+* target/swagger-java-client-1.0.0.jar
+* target/lib/*.jar
+
+## Getting Started
+
+Please follow the [installation](#installation) instruction and execute the following Java code:
+
+```java
+
+import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.DefaultApi;
+
+import java.io.File;
+import java.util.*;
+
+public class DefaultApiExample {
+
+    public static void main(String[] args) {
+        
+        DefaultApi apiInstance = new DefaultApi();
+        String categoryId = "categoryId_example"; // String | The category ID.
+        try {
+            Object result = apiInstance.categoriesCategoryIdAttributesGet(categoryId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling DefaultApi#categoriesCategoryIdAttributesGet");
+            e.printStackTrace();
+        }
+    }
+}
+
+```
+
+## Documentation for API Endpoints
+
+All URIs are relative to *https://api.mercadolibre.com*
+
+Class | Method | HTTP request | Description
+------------ | ------------- | ------------- | -------------
+*DefaultApi* | [**categoriesCategoryIdAttributesGet**](docs/DefaultApi.md#categoriesCategoryIdAttributesGet) | **GET** /categories/{category_id}/attributes | Returns all attributes from a category.
+*DefaultApi* | [**categoriesCategoryIdGet**](docs/DefaultApi.md#categoriesCategoryIdGet) | **GET** /categories/{category_id} | Returns information about a category.
+*DefaultApi* | [**itemsItemIdGet**](docs/DefaultApi.md#itemsItemIdGet) | **GET** /items/{item_id} | Return item infromation.
+*DefaultApi* | [**itemsItemIdPut**](docs/DefaultApi.md#itemsItemIdPut) | **PUT** /items/{item_id} | Update an item.
+*DefaultApi* | [**itemsPost**](docs/DefaultApi.md#itemsPost) | **POST** /items | List an item.
+*DefaultApi* | [**itemsValidatePost**](docs/DefaultApi.md#itemsValidatePost) | **POST** /items/validate | Validate the JSON before listing an item.
+*DefaultApi* | [**messagesMessageIdGet**](docs/DefaultApi.md#messagesMessageIdGet) | **GET** /messages/{message_id} | Get a message by ID.
+*DefaultApi* | [**messagesOrdersOrderIdGet**](docs/DefaultApi.md#messagesOrdersOrderIdGet) | **GET** /messages/orders/{order_id} | Return all messages from a order.
+*DefaultApi* | [**messagesPost**](docs/DefaultApi.md#messagesPost) | **POST** /messages | Send a message.
+*DefaultApi* | [**ordersOrderIdGet**](docs/DefaultApi.md#ordersOrderIdGet) | **GET** /orders/{order_id} | Get an order by ID.
+*DefaultApi* | [**ordersSearchGet**](docs/DefaultApi.md#ordersSearchGet) | **GET** /orders/search | Search orders by seller or buyer.
+*DefaultApi* | [**shipmentsShipmentIdGet**](docs/DefaultApi.md#shipmentsShipmentIdGet) | **GET** /shipments/{shipment_id} | Retrieves all data to make a delivery.
+*DefaultApi* | [**sitesGet**](docs/DefaultApi.md#sitesGet) | **GET** /sites | Return all sites where MercadoLibre operates.
+*DefaultApi* | [**sitesSiteIdCategoryPredictorPredictGet**](docs/DefaultApi.md#sitesSiteIdCategoryPredictorPredictGet) | **GET** /sites/{site_id}/category_predictor/predict | Predict category by title.
+*DefaultApi* | [**sitesSiteIdGet**](docs/DefaultApi.md#sitesSiteIdGet) | **GET** /sites/{site_id} | Return information about a site.
+*DefaultApi* | [**usersMeGet**](docs/DefaultApi.md#usersMeGet) | **GET** /users/me | Return account information about the authenticated user.
+*DefaultApi* | [**usersUserIdGet**](docs/DefaultApi.md#usersUserIdGet) | **GET** /users/{user_id} | Return user account information.
+
+
+## Documentation for Models
+
+ - [Address](docs/Address.md)
+ - [AlternativePhone](docs/AlternativePhone.md)
+ - [AttributeCombinations](docs/AttributeCombinations.md)
+ - [Attributes](docs/Attributes.md)
+ - [BillData](docs/BillData.md)
+ - [Billing](docs/Billing.md)
+ - [Buy](docs/Buy.md)
+ - [BuyerReputation](docs/BuyerReputation.md)
+ - [BuyerReputationTransactions](docs/BuyerReputationTransactions.md)
+ - [Canceled](docs/Canceled.md)
+ - [Categories](docs/Categories.md)
+ - [CategoryPrediction](docs/CategoryPrediction.md)
+ - [CategoryResponse](docs/CategoryResponse.md)
+ - [CategorySettings](docs/CategorySettings.md)
+ - [City](docs/City.md)
+ - [Claims](docs/Claims.md)
+ - [Context](docs/Context.md)
+ - [Conversation](docs/Conversation.md)
+ - [CostComponents](docs/CostComponents.md)
+ - [Country](docs/Country.md)
+ - [Credit](docs/Credit.md)
+ - [Currencies](docs/Currencies.md)
+ - [DelayedHandlingTime](docs/DelayedHandlingTime.md)
+ - [Descriptions](docs/Descriptions.md)
+ - [Error](docs/Error.md)
+ - [EstimatedDeliveryExtended](docs/EstimatedDeliveryExtended.md)
+ - [EstimatedDeliveryFinal](docs/EstimatedDeliveryFinal.md)
+ - [EstimatedDeliveryLimit](docs/EstimatedDeliveryLimit.md)
+ - [EstimatedDeliveryTime](docs/EstimatedDeliveryTime.md)
+ - [EstimatedHandlingLimit](docs/EstimatedHandlingLimit.md)
+ - [EstimatedScheduleLimit](docs/EstimatedScheduleLimit.md)
+ - [From](docs/From.md)
+ - [Geolocation](docs/Geolocation.md)
+ - [Identification](docs/Identification.md)
+ - [IdentificationTypesRules](docs/IdentificationTypesRules.md)
+ - [ImmediatePayment](docs/ImmediatePayment.md)
+ - [ItemJson](docs/ItemJson.md)
+ - [ItemResponse](docs/ItemResponse.md)
+ - [ItemResponseAttributes](docs/ItemResponseAttributes.md)
+ - [ItemResponsePictures](docs/ItemResponsePictures.md)
+ - [ListImmediatePayment](docs/ListImmediatePayment.md)
+ - [Location](docs/Location.md)
+ - [Message](docs/Message.md)
+ - [MessageAttachmentsValidations](docs/MessageAttachmentsValidations.md)
+ - [MessageCreated](docs/MessageCreated.md)
+ - [MessageFrom](docs/MessageFrom.md)
+ - [MessageJSON](docs/MessageJSON.md)
+ - [MessageModeration](docs/MessageModeration.md)
+ - [MessageSearchResults](docs/MessageSearchResults.md)
+ - [MessageText](docs/MessageText.md)
+ - [MessageTo](docs/MessageTo.md)
+ - [Metrics](docs/Metrics.md)
+ - [Moderation](docs/Moderation.md)
+ - [Municipality](docs/Municipality.md)
+ - [Neighborhood](docs/Neighborhood.md)
+ - [NotYetRated](docs/NotYetRated.md)
+ - [Offset](docs/Offset.md)
+ - [Paging](docs/Paging.md)
+ - [PathFromRoot](docs/PathFromRoot.md)
+ - [Phone](docs/Phone.md)
+ - [Pictures](docs/Pictures.md)
+ - [PredictionPathFromRoot](docs/PredictionPathFromRoot.md)
+ - [Ratings](docs/Ratings.md)
+ - [ReceiverAddress](docs/ReceiverAddress.md)
+ - [ReceiverAddressCity](docs/ReceiverAddressCity.md)
+ - [ReceiverAddressCountry](docs/ReceiverAddressCountry.md)
+ - [ReceiverAddressMunicipality](docs/ReceiverAddressMunicipality.md)
+ - [ReceiverAddressNeighborhood](docs/ReceiverAddressNeighborhood.md)
+ - [ReceiverAddressState](docs/ReceiverAddressState.md)
+ - [Results](docs/Results.md)
+ - [ResultsFrom](docs/ResultsFrom.md)
+ - [ResultsText](docs/ResultsText.md)
+ - [ResultsTo](docs/ResultsTo.md)
+ - [Rules](docs/Rules.md)
+ - [SaleTerms](docs/SaleTerms.md)
+ - [Sales](docs/Sales.md)
+ - [SearchLocation](docs/SearchLocation.md)
+ - [SearchLocationCity](docs/SearchLocationCity.md)
+ - [SearchLocationState](docs/SearchLocationState.md)
+ - [Sell](docs/Sell.md)
+ - [SellImmediatePayment](docs/SellImmediatePayment.md)
+ - [SellerAddress](docs/SellerAddress.md)
+ - [SellerReputation](docs/SellerReputation.md)
+ - [SenderAddress](docs/SenderAddress.md)
+ - [Shipment](docs/Shipment.md)
+ - [Shipping](docs/Shipping.md)
+ - [ShippingItems](docs/ShippingItems.md)
+ - [ShippingOption](docs/ShippingOption.md)
+ - [ShoppingCart](docs/ShoppingCart.md)
+ - [Site](docs/Site.md)
+ - [SiteSettings](docs/SiteSettings.md)
+ - [Sites](docs/Sites.md)
+ - [SitesSite](docs/SitesSite.md)
+ - [State](docs/State.md)
+ - [Status](docs/Status.md)
+ - [StatusHistory](docs/StatusHistory.md)
+ - [Text](docs/Text.md)
+ - [TimeFrame](docs/TimeFrame.md)
+ - [To](docs/To.md)
+ - [Transactions](docs/Transactions.md)
+ - [Unrated](docs/Unrated.md)
+ - [UserResponse](docs/UserResponse.md)
+ - [Variations](docs/Variations.md)
+ - [Warnings](docs/Warnings.md)
+
+
+## Documentation for Authorization
+
+Authentication schemes defined for the API:
+### oAuth2
+
+- **Type**: OAuth
+- **Flow**: accessCode
+- **Authorization URL**: https://auth.mercadolibre.com.ar/authorization
+- **Scopes**: 
+  - read: Grants read access
+  - write: Grants write access
+  - offline_access: Grants read and write access, and adds the possibility to get a refresh token and stay authenticated as the user.
+
+
+## Recommendation
+
+It's recommended to create an instance of `ApiClient` per thread in a multithreaded environment to avoid any potential issues.
+
+## Author
+
+
+
