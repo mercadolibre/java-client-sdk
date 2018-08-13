@@ -107,7 +107,7 @@ public class DefaultApi {
      */
 
 /**/
-    public Object authorize(String code, String redirectUri) throws ApiException {
+    public AccessToken authorize(String code, String redirectUri) throws ApiException {
         Object localVarPostBody = null;
 
         // create path and map variables
@@ -138,7 +138,7 @@ public class DefaultApi {
 
         String[] localVarAuthNames = new String[]{};
 
-        GenericType<Object> localVarReturnType = new GenericType<Object>() {
+        GenericType<AccessToken> localVarReturnType = new GenericType<AccessToken>() {
         };
         return apiClient.invokeAPI(localVarPath, "POST", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
     }

@@ -45,44 +45,60 @@ public class DefaultApiTest {
 
 
     /**
-     * Returns response from any specified resource.
+     * Returns auth Url
      *
      * @throws ApiException if the Api call fails
      */
     @Test
     public void getAuthUrlTest() {
-        DefaultApi api = new DefaultApi(new ApiClient(), clientId, clientSecret);
-        String response = api.getAuthUrl(redirectUri, Configuration.AuthUrls.MLA);
-        StringBuilder sb = new StringBuilder();
-        sb.append(Configuration.AuthUrls.MLA.getValue());
-        sb.append("/authorization?response_type=code&client_id=");
-        sb.append(clientId);
-        sb.append("&redirect_uri=");
-        try {
-            sb.append(URLEncoder.encode(redirectUri, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            sb.append(redirectUri);
+            DefaultApi api = new DefaultApi(new ApiClient(), clientId, clientSecret);
+            String response = api.getAuthUrl(redirectUri, Configuration.AuthUrls.MLA);
+            StringBuilder sb = new StringBuilder();
+            sb.append(Configuration.AuthUrls.MLA.getValue());
+            sb.append("/authorization?response_type=code&client_id=");
+            sb.append(clientId);
+            sb.append("&redirect_uri=");
+            try {
+                sb.append(URLEncoder.encode(redirectUri, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                sb.append(redirectUri);
+            }
+            assertNotNull(response);
+            assertEquals(sb.toString(), response);
         }
-        assertNotNull(response);
-        assertEquals(sb.toString(), response);
-        System.out.println(response);
-    }
 
+
+    /**
+     * Returns access token.
+     *
+     * @throws ApiException if the Api call fails
+     */
     @Test
     public void authorizeTest() throws ApiException {
         DefaultApi api = new DefaultApi(new ApiClient(), clientId, clientSecret);
         String code = null;
-        Object token = api.authorize(code, redirectUri);
-        System.out.println(token);
+        AccessToken response = api.authorize(code, redirectUri);
+        assertNotNull(response);
+        assertNotNull(response.getAccess_token());
+        assertEquals("bearer", response.getToken_type());
     }
 
+
+    /**
+     * Returns refresh token
+     *
+     * @throws ApiException if the Api call fails
+     */
     @Test
     public void refreshTokenTest() throws ApiException {
         DefaultApi api = new DefaultApi(new ApiClient(), clientId, clientSecret);
-        String refreshToken = null;
+        String refreshToken = "";
         RefreshToken response = api.refreshAccessToken(refreshToken);
-        System.out.println(response);
+        assertNotNull(response);
+        assertNotNull(response.getAccess_token());
+        assertEquals("bearer", response.getToken_type());
     }
+
     /**
      * Returns response from any specified resource.
      *
@@ -93,7 +109,6 @@ public class DefaultApiTest {
         String resource = "currencies";
         Object response = api.defaultGet(resource);
         assertNotNull(response);
-        System.out.println(response);
     }
 
     /**
@@ -116,7 +131,6 @@ public class DefaultApiTest {
         body.siteId("MLA");
         Object response = api.defaultPost(accessToken, resource, body);
         assertNotNull(response);
-        System.out.println(response);
     }
 
     /**
@@ -184,7 +198,9 @@ public class DefaultApiTest {
         ItemJson body = new ItemJson();
         body.price(100);
         ItemResponse response = api.itemsItemIdPut(itemId, accessToken, body);
-        System.out.println(response);
+        assertNotNull(response);
+        assertEquals(itemId, response.getId());
+        assertEquals(body.getPrice(), response.getPrice());
     }
 
     /**
@@ -230,7 +246,7 @@ public class DefaultApiTest {
         body.availableQuantity(2);
         body.siteId("MLA");
         Object response = api.itemsValidatePost(accessToken, body);
-        System.out.println(response);
+        assertNull(response);
     }
 
     /**
@@ -258,7 +274,6 @@ public class DefaultApiTest {
         assertNotNull(response);
         assertNotNull(response.getResults());
         assertTrue("Total must be >= 0", response.getPaging().getTotal() >= 0);
-        System.out.println(response);
     }
 
     /**
@@ -308,7 +323,6 @@ public class DefaultApiTest {
         Integer orderId = null;
         Object response = api.ordersOrderIdGet(accessToken, orderId);
         assertNotNull(response);
-        System.out.println(response);
     }
 
     /**
@@ -349,7 +363,8 @@ public class DefaultApiTest {
     public void sitesGetTest() throws ApiException {
         Sites response = api.sitesGet();
         assertNotNull(response);
-        System.out.println(response);
+        assertNotNull(response.get(0).getId());
+        assertNotNull(response.get(0).getName());
     }
 
     /**
@@ -363,6 +378,9 @@ public class DefaultApiTest {
         String title = "Ipod Touch 6";
         CategoryPrediction response = api.sitesSiteIdCategoryPredictorPredictGet(siteId, title);
         assertNotNull(response);
+        assertNotNull(response.getId());
+        assertNotNull(response.getName());
+        assertNotNull(response.getPredictionProbability());
     }
 
     /**
