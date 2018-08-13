@@ -1,8 +1,5 @@
 package io.swagger.client;
 
-import io.swagger.client.auth.ApiKeyAuth;
-import io.swagger.client.auth.Authentication;
-import io.swagger.client.auth.OAuth;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.client.HttpUrlConnectorProvider;
@@ -44,8 +41,6 @@ public class ApiClient {
     protected JSON json;
     protected String tempFolderPath = null;
 
-    protected Map<String, Authentication> authentications;
-
     protected int statusCode;
     protected Map<String, List<String>> responseHeaders;
 
@@ -59,12 +54,6 @@ public class ApiClient {
 
         // Set default User-Agent.
         setUserAgent("MELI-JAVA-SDK-0.0.5");
-
-        // Setup authentications (key: authentication name, value: authentication).
-        authentications = new HashMap<String, Authentication>();
-        authentications.put("oAuth2", new OAuth());
-        // Prevent the authentications from being modified.
-        authentications = Collections.unmodifiableMap(authentications);
     }
 
     /**
@@ -109,65 +98,6 @@ public class ApiClient {
         return responseHeaders;
     }
 
-    /**
-     * Get authentications (key: authentication name, value: authentication).
-     * @return Map of authentication object
-     */
-    public Map<String, Authentication> getAuthentications() {
-        return authentications;
-    }
-
-    /**
-     * Get authentication for the given name.
-     *
-     * @param authName The authentication name
-     * @return The authentication, null if not found
-     */
-    public Authentication getAuthentication(String authName) {
-        return authentications.get(authName);
-    }
-
-    /**
-     * Helper method to set API key value for the first API key authentication.
-     * @param apiKey API key
-     */
-    public void setApiKey(String apiKey) {
-        for (Authentication auth : authentications.values()) {
-            if (auth instanceof ApiKeyAuth) {
-                ((ApiKeyAuth) auth).setApiKey(apiKey);
-                return;
-            }
-        }
-        throw new RuntimeException("No API key authentication configured!");
-    }
-
-    /**
-     * Helper method to set API key prefix for the first API key authentication.
-     * @param apiKeyPrefix API key prefix
-     */
-    public void setApiKeyPrefix(String apiKeyPrefix) {
-        for (Authentication auth : authentications.values()) {
-            if (auth instanceof ApiKeyAuth) {
-                ((ApiKeyAuth) auth).setApiKeyPrefix(apiKeyPrefix);
-                return;
-            }
-        }
-        throw new RuntimeException("No API key authentication configured!");
-    }
-
-    /**
-     * Helper method to set access token for the first OAuth2 authentication.
-     * @param accessToken Access token
-     */
-    public void setAccessToken(String accessToken) {
-        for (Authentication auth : authentications.values()) {
-            if (auth instanceof OAuth) {
-                ((OAuth) auth).setAccessToken(accessToken);
-                return;
-            }
-        }
-        throw new RuntimeException("No OAuth2 authentication configured!");
-    }
 
     /**
      * Set the User-Agent header's value (by adding to the default header map).
@@ -610,7 +540,6 @@ public class ApiClient {
      * @throws ApiException API exception
      */
     public <T> T invokeAPI(String path, String method, List<Pair> queryParams, Object body, Map<String, String> headerParams, Map<String, Object> formParams, String accept, String contentType, String[] authNames, GenericType<T> returnType) throws ApiException {
-        updateParamsForAuth(authNames, queryParams, headerParams);
 
         // Not using `.target(this.basePath).path(path)` below,
         // to support (constant) query string in `path`, e.g. "/posts?draft=1"
@@ -736,18 +665,5 @@ public class ApiClient {
             responseHeaders.put(entry.getKey(), headers);
         }
         return responseHeaders;
-    }
-
-    /**
-     * Update query and header parameters based on authentication settings.
-     *
-     * @param authNames The authentications to apply
-     */
-    protected void updateParamsForAuth(String[] authNames, List<Pair> queryParams, Map<String, String> headerParams) {
-        for (String authName : authNames) {
-            Authentication auth = authentications.get(authName);
-            if (auth == null) throw new RuntimeException("Authentication undefined: " + authName);
-            auth.applyToParams(queryParams, headerParams);
-        }
     }
 }

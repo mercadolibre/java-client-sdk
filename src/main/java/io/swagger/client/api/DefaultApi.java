@@ -136,7 +136,7 @@ public class DefaultApi {
         };
         final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-        String[] localVarAuthNames = new String[]{"oAuth2"};
+        String[] localVarAuthNames = new String[]{};
 
         GenericType<Object> localVarReturnType = new GenericType<Object>() {
         };
