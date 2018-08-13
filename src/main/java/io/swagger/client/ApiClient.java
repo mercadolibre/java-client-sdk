@@ -58,7 +58,7 @@ public class ApiClient {
         this.dateFormat = new RFC3339DateFormat();
 
         // Set default User-Agent.
-        setUserAgent("Swagger-Codegen/1.0.0/java");
+        setUserAgent("MELI-JAVA-SDK-0.0.5");
 
         // Setup authentications (key: authentication name, value: authentication).
         authentications = new HashMap<String, Authentication>();
