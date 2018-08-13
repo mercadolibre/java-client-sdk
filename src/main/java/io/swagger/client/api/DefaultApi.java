@@ -8,7 +8,6 @@ import io.swagger.client.model.*;
 
 import javax.ws.rs.core.GenericType;
 import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -942,7 +941,7 @@ public class DefaultApi {
      * @return Shipment
      * @throws ApiException if fails to make API call
      */
-    public Shipment shipmentsShipmentIdGet(String accessToken, BigDecimal shipmentId) throws ApiException {
+    public Shipment shipmentsShipmentIdGet(String accessToken, Long shipmentId) throws ApiException {
         Object localVarPostBody = null;
 
         // verify the required parameter 'accessToken' is set

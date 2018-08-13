@@ -13,24 +13,12 @@
 
 package io.swagger.client.model;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.client.model.Address;
-import io.swagger.client.model.AlternativePhone;
-import io.swagger.client.model.BillData;
-import io.swagger.client.model.BuyerReputation;
-import io.swagger.client.model.Context;
-import io.swagger.client.model.Credit;
-import io.swagger.client.model.Identification;
-import io.swagger.client.model.Phone;
-import io.swagger.client.model.SellerReputation;
-import io.swagger.client.model.Status;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * UserResponse
@@ -107,7 +95,7 @@ public class UserResponse {
   private BuyerReputation buyerReputation = null;
 
   @JsonProperty("status")
-  private Status status = null;
+  private Object status = null;
 
   @JsonProperty("secure_email")
   private String secureEmail = null;
@@ -558,11 +546,11 @@ public class UserResponse {
    * @return status
   **/
   @ApiModelProperty(value = "")
-  public Status getStatus() {
+  public Object getStatus() {
     return status;
   }
 
-  public void setStatus(Status status) {
+  public void setStatus(Object status) {
     this.status = status;
   }
 

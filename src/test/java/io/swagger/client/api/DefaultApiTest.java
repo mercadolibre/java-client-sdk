@@ -19,7 +19,12 @@ import io.swagger.client.model.*;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.math.BigDecimal;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * API tests for DefaultApi
@@ -27,10 +32,16 @@ import java.math.BigDecimal;
 @Ignore
 public class DefaultApiTest {
 
-    private final Long clientId = 8636606929674838L;
-    private final String clientSecret = "";
+    /**
+     * To run tests replace all the corresponding null values for valid values
+     **/
+
+    private final Long clientId = null;
+    private final String clientSecret = null;
+    private final String redirectUri = null;
+    private final String code = null;
+    private final String accessToken = null;
     private final DefaultApi api = new DefaultApi();
-    private final String accessToken = "";
 
 
     /**
@@ -38,14 +49,23 @@ public class DefaultApiTest {
      *
      * @throws ApiException if the Api call fails
      */
-   @Test
-    public void getAuthUrlTest() throws ApiException {
-        String redirectUri = "https://fsolariherokutest.herokuapp.com";
+    @Test
+    public void getAuthUrlTest() throws ApiException, UnsupportedEncodingException {
+        DefaultApi api = new DefaultApi(clientId, clientSecret);
         String response = api.getAuthUrl(redirectUri, Configuration.AuthUrls.MLA);
-        System.out.println(response);
-
+        StringBuilder sb = new StringBuilder();
+        sb.append(Configuration.AuthUrls.MLA.getValue());
+        sb.append("/authorization?response_type=code&client_id=");
+        sb.append(clientId);
+        sb.append("&redirect_uri=");
+        try {
+            sb.append(URLEncoder.encode(redirectUri, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            sb.append(redirectUri);
+        }
+        assertNotNull(response);
+        assertEquals(sb.toString(), response);
     }
-
 
     /**
      * Returns response from any specified resource.
@@ -56,8 +76,8 @@ public class DefaultApiTest {
     public void defaultGetTest() throws ApiException {
         String resource = "currencies";
         Object response = api.defaultGet(resource);
+        assertNotNull(response);
         System.out.println(response);
-        // TODO: test validations
     }
 
     /**
@@ -79,8 +99,8 @@ public class DefaultApiTest {
         body.availableQuantity(2);
         body.siteId("MLA");
         Object response = api.defaultPost(accessToken, resource, body);
+        assertNotNull(response);
         System.out.println(response);
-        // TODO: test validations
     }
 
     /**
@@ -90,13 +110,12 @@ public class DefaultApiTest {
      */
     @Test
     public void defaultPutTest() throws ApiException {
-        String id = "";
+        String id = null;
         String resource = "items";
         ItemJson body = new ItemJson();
         body.price(100);
         Object response = api.defaultPut(resource, id, accessToken, body);
-        System.out.println(response);
-        // TODO: test validations
+        assertNotNull(response);
     }
 
     /**
@@ -106,11 +125,10 @@ public class DefaultApiTest {
      */
     @Test
     public void defaultDeleteTest() throws ApiException {
-        String id = "";
-        String resource = "currencies";
+        String id = null;
+        String resource = null;
         Object response = api.defaultDelete(resource, id, accessToken);
-        System.out.println(response);
-        // TODO: test validations
+        assertNotNull(response);
     }
 
     /**
@@ -120,10 +138,10 @@ public class DefaultApiTest {
      */
     @Test
     public void categoriesCategoryIdGetTest() throws ApiException {
-        String categoryId = null;
+        String categoryId = "MLA3530";
         CategoryResponse response = api.categoriesCategoryIdGet(categoryId);
-
-        // TODO: test validations
+        assertNotNull(response);
+        assertEquals(categoryId, response.getId());
     }
 
     /**
@@ -133,11 +151,10 @@ public class DefaultApiTest {
      */
     @Test
     public void itemsItemIdGetTest() throws ApiException {
-        String itemId = null;
-        String accessToken = null;
+        String itemId = "MLA652266260";
         ItemResponse response = api.itemsItemIdGet(itemId, accessToken);
-
-        // TODO: test validations
+        assertNotNull(response);
+        assertEquals(itemId, response.getId());
     }
 
     /**
@@ -148,11 +165,10 @@ public class DefaultApiTest {
     @Test
     public void itemsItemIdPutTest() throws ApiException {
         String itemId = null;
-        String accessToken = null;
-        Object body = null;
+        ItemJson body = new ItemJson();
+        body.price(100);
         ItemResponse response = api.itemsItemIdPut(itemId, accessToken, body);
-
-        // TODO: test validations
+        System.out.println(response);
     }
 
     /**
@@ -162,11 +178,22 @@ public class DefaultApiTest {
      */
     @Test
     public void itemsPostTest() throws ApiException {
-        String accessToken = null;
-        ItemJson body = null;
+        ItemJson body = new ItemJson();
+        body.title("TEST TITLE");
+        body.listingTypeId("gold_special");
+        body.price(10);
+        body.categoryId("MLA3530");
+        body.buyingMode("buy_it_now");
+        body.currencyId("ARS");
+        body.condition("new");
+        body.availableQuantity(2);
+        body.siteId("MLA");
         ItemResponse response = api.itemsPost(accessToken, body);
-
-        // TODO: test validations
+        assertNotNull(response);
+        assertEquals(body.getTitle().toLowerCase(), (response.getTitle().toLowerCase()));
+        assertEquals(body.getSiteId(), response.getSiteId());
+        assertEquals(body.getPrice(), response.getPrice());
+        assertEquals(body.getCategoryId(), response.getCategoryId());
     }
 
     /**
@@ -176,11 +203,18 @@ public class DefaultApiTest {
      */
     @Test
     public void itemsValidatePostTest() throws ApiException {
-        String accessToken = null;
-        ItemJson body = null;
+        ItemJson body = new ItemJson();
+        body.title("TEST TITLE");
+        body.listingTypeId("gold_special");
+        body.price(10);
+        body.categoryId("MLA3530");
+        body.buyingMode("buy_it_now");
+        body.currencyId("ARS");
+        body.condition("new");
+        body.availableQuantity(2);
+        body.siteId("MLA");
         Object response = api.itemsValidatePost(accessToken, body);
-
-        // TODO: test validations
+        System.out.println(response);
     }
 
     /**
@@ -190,11 +224,10 @@ public class DefaultApiTest {
      */
     @Test
     public void messagesMessageIdGetTest() throws ApiException {
-        String accessToken = null;
         String messageId = null;
         Message response = api.messagesMessageIdGet(accessToken, messageId);
-
-        // TODO: test validations
+        assertNotNull(response);
+        assertEquals(messageId, response.getMessageId());
     }
 
     /**
@@ -204,11 +237,12 @@ public class DefaultApiTest {
      */
     @Test
     public void messagesOrdersOrderIdGetTest() throws ApiException {
-        String accessToken = null;
         Integer orderId = null;
         MessageSearchResults response = api.messagesOrdersOrderIdGet(accessToken, orderId);
-
-        // TODO: test validations
+        assertNotNull(response);
+        assertNotNull(response.getResults());
+        assertTrue("Total must be >= 0", response.getPaging().getTotal() >= 0);
+        System.out.println(response);
     }
 
     /**
@@ -218,12 +252,35 @@ public class DefaultApiTest {
      */
     @Test
     public void messagesPostTest() throws ApiException {
-        String accessToken = null;
-        MessageJSON body = null;
+        MessageJSON body = new MessageJSON();
+
+        From sender = new From();
+        sender.userId(null);
+
+        List<To> receivers = new ArrayList<>();
+
+        To receiver = new To();
+        receiver.userId(null);
+        receiver.siteId("MLA");
+        receiver.resource("orders");
+        receiver.resourceId(null);
+
+        receivers.add(0, receiver);
+
+        Text text = new Text();
+        text.plain("TEST MESSAGE");
+
+        body.from(sender);
+        body.to(receivers);
+        body.text(text);
         MessageCreated response = api.messagesPost(accessToken, body);
 
-        // TODO: test validations
+        assertNotNull(response);
+        assertEquals(body.getFrom().getUserId(), response.get(0).getFrom().getUserId());
+        assertEquals(body.getTo(), response.get(0).getTo());
+        assertEquals(body.getText().getPlain(), response.get(0).getText().getPlain());
     }
+
 
     /**
      * Get an order by ID.
@@ -232,11 +289,10 @@ public class DefaultApiTest {
      */
     @Test
     public void ordersOrderIdGetTest() throws ApiException {
-        String accessToken = null;
         Integer orderId = null;
         Object response = api.ordersOrderIdGet(accessToken, orderId);
-
-        // TODO: test validations
+        assertNotNull(response);
+        System.out.println(response);
     }
 
     /**
@@ -246,14 +302,13 @@ public class DefaultApiTest {
      */
     @Test
     public void ordersSearchGetTest() throws ApiException {
-        String accessToken = null;
         Integer buyer = null;
         Integer seller = null;
         Integer offset = null;
         Integer limit = null;
         Object response = api.ordersSearchGet(accessToken, buyer, seller, offset, limit);
-
-        // TODO: test validations
+        assertNotNull(response);
+        System.out.println(response);
     }
 
     /**
@@ -263,11 +318,10 @@ public class DefaultApiTest {
      */
     @Test
     public void shipmentsShipmentIdGetTest() throws ApiException {
-        String accessToken = null;
-        BigDecimal shipmentId = null;
+        Long shipmentId = null;
         Shipment response = api.shipmentsShipmentIdGet(accessToken, shipmentId);
-
-        // TODO: test validations
+        assertNotNull(response);
+        assertEquals(shipmentId, response.getId());
     }
 
     /**
@@ -278,8 +332,8 @@ public class DefaultApiTest {
     @Test
     public void sitesGetTest() throws ApiException {
         Sites response = api.sitesGet();
-
-        // TODO: test validations
+        assertNotNull(response);
+        System.out.println(response);
     }
 
     /**
@@ -289,11 +343,10 @@ public class DefaultApiTest {
      */
     @Test
     public void sitesSiteIdCategoryPredictorPredictGetTest() throws ApiException {
-        String siteId = null;
-        String title = null;
+        String siteId = "MLA";
+        String title = "Ipod Touch 6";
         CategoryPrediction response = api.sitesSiteIdCategoryPredictorPredictGet(siteId, title);
-
-        // TODO: test validations
+        assertNotNull(response);
     }
 
     /**
@@ -303,10 +356,10 @@ public class DefaultApiTest {
      */
     @Test
     public void sitesSiteIdGetTest() throws ApiException {
-        String siteId = null;
+        String siteId = "MLA";
         Site response = api.sitesSiteIdGet(siteId);
-
-        // TODO: test validations
+        assertNotNull(response);
+        assertEquals(siteId, response.getId());
     }
 
     /**
@@ -316,10 +369,10 @@ public class DefaultApiTest {
      */
     @Test
     public void usersMeGetTest() throws ApiException {
-        String accessToken = null;
+        Integer userId = null;
         UserResponse response = api.usersMeGet(accessToken);
-
-        // TODO: test validations
+        assertNotNull(response);
+        assertEquals(userId, response.getId());
     }
 
     /**
@@ -330,10 +383,9 @@ public class DefaultApiTest {
     @Test
     public void usersUserIdGetTest() throws ApiException {
         Integer userId = null;
-        String accessToken = null;
         UserResponse response = api.usersUserIdGet(userId, accessToken);
-
-        // TODO: test validations
+        assertNotNull(response);
+        assertEquals(userId, response.getId());
     }
 
 }
