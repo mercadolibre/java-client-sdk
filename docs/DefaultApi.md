@@ -35,7 +35,6 @@ Returns all attributes from a category.
 //import io.swagger.client.ApiException;
 //import io.swagger.client.api.DefaultApi;
 
-
 DefaultApi apiInstance = new DefaultApi();
 String categoryId = "categoryId_example"; // String | The category ID.
 try {
@@ -77,7 +76,6 @@ Returns information about a category.
 // Import classes:
 //import io.swagger.client.ApiException;
 //import io.swagger.client.api.DefaultApi;
-
 
 DefaultApi apiInstance = new DefaultApi();
 String categoryId = "categoryId_example"; // String | The category ID.
@@ -164,16 +162,9 @@ Update an item.
 ```java
 // Import classes:
 //import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
 //import io.swagger.client.api.DefaultApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
 
-// Configure OAuth2 access token for authorization: oAuth2
-OAuth oAuth2 = (OAuth) defaultClient.getAuthentication("oAuth2");
-oAuth2.setAccessToken("YOUR ACCESS TOKEN");
 
 DefaultApi apiInstance = new DefaultApi();
 String itemId = "itemId_example"; // String | The item ID.
@@ -219,16 +210,9 @@ List an item.
 ```java
 // Import classes:
 //import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
 //import io.swagger.client.api.DefaultApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
 
-// Configure OAuth2 access token for authorization: oAuth2
-OAuth oAuth2 = (OAuth) defaultClient.getAuthentication("oAuth2");
-oAuth2.setAccessToken("YOUR ACCESS TOKEN");
 
 DefaultApi apiInstance = new DefaultApi();
 String accessToken = "\"APP_USR-123213212-070308-c79195c77c4587e48dd9f7a3f2a5ea78-1232311\""; // String | Go to http://developers.mercadolibre.com/products-authentication-authorization/ to get a valid access_token for testing purposes.
@@ -272,16 +256,13 @@ Validate the JSON before listing an item.
 ```java
 // Import classes:
 //import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
 //import io.swagger.client.api.DefaultApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
 
-// Configure OAuth2 access token for authorization: oAuth2
-OAuth oAuth2 = (OAuth) defaultClient.getAuthentication("oAuth2");
-oAuth2.setAccessToken("YOUR ACCESS TOKEN");
+
+
+
+
 
 DefaultApi apiInstance = new DefaultApi();
 String accessToken = "\":APP_USR-12312312-072610-cbfbdd1cde9cef0174637f94561ed43e-1231231\""; // String | 
@@ -325,16 +306,14 @@ Get a message by ID.
 ```java
 // Import classes:
 //import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
+
 //import io.swagger.client.api.DefaultApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
 
-// Configure OAuth2 access token for authorization: oAuth2
-OAuth oAuth2 = (OAuth) defaultClient.getAuthentication("oAuth2");
-oAuth2.setAccessToken("YOUR ACCESS TOKEN");
+
+
+
+
 
 DefaultApi apiInstance = new DefaultApi();
 String accessToken = "\"APP_USR-1232321321-072613-cabb235ea80bb70b9312c2aade38ec3d-3213211\""; // String | 
@@ -378,16 +357,14 @@ Return all messages from a order.
 ```java
 // Import classes:
 //import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
+
 //import io.swagger.client.api.DefaultApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
 
-// Configure OAuth2 access token for authorization: oAuth2
-OAuth oAuth2 = (OAuth) defaultClient.getAuthentication("oAuth2");
-oAuth2.setAccessToken("YOUR ACCESS TOKEN");
+
+
+
+
 
 DefaultApi apiInstance = new DefaultApi();
 String accessToken = "\"APP_USR-123213213-072613-cabb235ea80bb70b9312c2aade38ec3d-32132221\""; // String | 
@@ -431,16 +408,14 @@ Send a message.
 ```java
 // Import classes:
 //import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
+
 //import io.swagger.client.api.DefaultApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
 
-// Configure OAuth2 access token for authorization: oAuth2
-OAuth oAuth2 = (OAuth) defaultClient.getAuthentication("oAuth2");
-oAuth2.setAccessToken("YOUR ACCESS TOKEN");
+
+
+
+
 
 DefaultApi apiInstance = new DefaultApi();
 String accessToken = "\"APP_USR-12323311-072613-cabb235ea80bb70b9312c2aade38ec3d-33321123\""; // String | 
@@ -484,16 +459,14 @@ Get an order by ID.
 ```java
 // Import classes:
 //import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
+
 //import io.swagger.client.api.DefaultApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
 
-// Configure OAuth2 access token for authorization: oAuth2
-OAuth oAuth2 = (OAuth) defaultClient.getAuthentication("oAuth2");
-oAuth2.setAccessToken("YOUR ACCESS TOKEN");
+
+
+
+
 
 DefaultApi apiInstance = new DefaultApi();
 String accessToken = "\"APP_USR-1232311211-072613-cabb235ea80bb70b9312c2aade38ec3d-1233211\""; // String | 
@@ -537,16 +510,14 @@ Search orders by seller or buyer.
 ```java
 // Import classes:
 //import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
+
 //import io.swagger.client.api.DefaultApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
 
-// Configure OAuth2 access token for authorization: oAuth2
-OAuth oAuth2 = (OAuth) defaultClient.getAuthentication("oAuth2");
-oAuth2.setAccessToken("YOUR ACCESS TOKEN");
+
+
+
+
 
 DefaultApi apiInstance = new DefaultApi();
 String accessToken = "\"APP_USR-2132133211-072613-cabb235ea80bb70b9312c2aade38ec3d-1232121\""; // String | 
@@ -596,16 +567,14 @@ Retrieves all data to make a delivery.
 ```java
 // Import classes:
 //import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
+
 //import io.swagger.client.api.DefaultApi;
 
-ApiClient defaultClient = Configuration.getDefaultApiClient();
 
-// Configure OAuth2 access token for authorization: oAuth2
-OAuth oAuth2 = (OAuth) defaultClient.getAuthentication("oAuth2");
-oAuth2.setAccessToken("YOUR ACCESS TOKEN");
+
+
+
+
 
 DefaultApi apiInstance = new DefaultApi();
 String accessToken = "\"APP_USR-1232132112-072613-cabb235ea80bb70b9312c2aade38ec3d-3213211\""; // String | 
@@ -776,16 +745,7 @@ Return account information about the authenticated user.
 ```java
 // Import classes:
 //import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
 //import io.swagger.client.api.DefaultApi;
-
-ApiClient defaultClient = Configuration.getDefaultApiClient();
-
-// Configure OAuth2 access token for authorization: oAuth2
-OAuth oAuth2 = (OAuth) defaultClient.getAuthentication("oAuth2");
-oAuth2.setAccessToken("YOUR ACCESS TOKEN");
 
 DefaultApi apiInstance = new DefaultApi();
 String accessToken = "\"APP_USR-123213-071213-c9a1a708e215161df21d0d89de2e5147-12312312\""; // String | Go to http://developers.mercadolibre.com/products-authentication-authorization/ to get a valid access_token for testing purposes.
@@ -827,16 +787,7 @@ Return user account information.
 ```java
 // Import classes:
 //import io.swagger.client.ApiClient;
-//import io.swagger.client.ApiException;
-//import io.swagger.client.Configuration;
-//import io.swagger.client.auth.*;
 //import io.swagger.client.api.DefaultApi;
-
-ApiClient defaultClient = Configuration.getDefaultApiClient();
-
-// Configure OAuth2 access token for authorization: oAuth2
-OAuth oAuth2 = (OAuth) defaultClient.getAuthentication("oAuth2");
-oAuth2.setAccessToken("YOUR ACCESS TOKEN");
 
 DefaultApi apiInstance = new DefaultApi();
 Integer userId = 56; // Integer | The user Id.
@@ -869,4 +820,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: application/json
  - **Accept**: application/json
+
+
 
