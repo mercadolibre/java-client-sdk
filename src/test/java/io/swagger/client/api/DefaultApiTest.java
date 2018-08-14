@@ -46,27 +46,41 @@ public class DefaultApiTest {
 
     /**
      * Returns auth Url
-     *
-     * @throws ApiException if the Api call fails
      */
     @Test
-    public void getAuthUrlTest() {
-            DefaultApi api = new DefaultApi(new ApiClient(), clientId, clientSecret);
-            String response = api.getAuthUrl(redirectUri, Configuration.AuthUrls.MLA);
-            StringBuilder sb = new StringBuilder();
-            sb.append(Configuration.AuthUrls.MLA.getValue());
-            sb.append("/authorization?response_type=code&client_id=");
-            sb.append(clientId);
-            sb.append("&redirect_uri=");
-            try {
-                sb.append(URLEncoder.encode(redirectUri, "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                sb.append(redirectUri);
-            }
-            assertNotNull(response);
-            assertEquals(sb.toString(), response);
+    public void getAuthUrlTest() throws ApiException {
+        DefaultApi api = new DefaultApi(new ApiClient(), clientId, clientSecret);
+        String response = api.getAuthUrl(redirectUri, Configuration.AuthUrls.MLA);
+        StringBuilder sb = new StringBuilder();
+        sb.append(Configuration.AuthUrls.MLA.getValue());
+        sb.append("/authorization?response_type=code&client_id=");
+        sb.append(clientId);
+        sb.append("&redirect_uri=");
+        try {
+            sb.append(URLEncoder.encode(redirectUri, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            sb.append(redirectUri);
         }
+        assertNotNull(response);
+        assertEquals(sb.toString(), response);
+    }
 
+    @Test(expected = ApiException.class)
+    public void getAuthUrlTestFailsIfRedirectUriIsNull() throws ApiException {
+        String redirectUri = null;
+        DefaultApi api = new DefaultApi(new ApiClient(), clientId, clientSecret);
+        api.getAuthUrl(redirectUri, Configuration.AuthUrls.MLA);
+        StringBuilder sb = new StringBuilder();
+        sb.append(Configuration.AuthUrls.MLA.getValue());
+        sb.append("/authorization?response_type=code&client_id=");
+        sb.append(clientId);
+        sb.append("&redirect_uri=");
+        try {
+            sb.append(URLEncoder.encode(redirectUri, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            sb.append(redirectUri);
+        }
+    }
 
     /**
      * Returns access token.
@@ -76,13 +90,26 @@ public class DefaultApiTest {
     @Test
     public void authorizeTest() throws ApiException {
         DefaultApi api = new DefaultApi(new ApiClient(), clientId, clientSecret);
-        String code = null;
+        String code = "";
         AccessToken response = api.authorize(code, redirectUri);
         assertNotNull(response);
         assertNotNull(response.getAccess_token());
         assertEquals("bearer", response.getToken_type());
     }
 
+    @Test(expected = ApiException.class)
+    public void authorizeTestFailsIfCodeIsNull() throws ApiException {
+        DefaultApi api = new DefaultApi(new ApiClient(), clientId, clientSecret);
+        String code = null;
+        api.authorize(code, redirectUri);
+    }
+
+    @Test(expected = ApiException.class)
+    public void authorizeTestFailsIfCodeIsInvalid() throws ApiException {
+        DefaultApi api = new DefaultApi(new ApiClient(), clientId, clientSecret);
+        String code = "12321321";
+        api.authorize(code, redirectUri);
+    }
 
     /**
      * Returns refresh token
@@ -99,6 +126,13 @@ public class DefaultApiTest {
         assertEquals("bearer", response.getToken_type());
     }
 
+    @Test(expected = ApiException.class)
+    public void refreshTokenTestFailsIfRefreshTokenIsInvalid() throws ApiException {
+        DefaultApi api = new DefaultApi(new ApiClient(), clientId, clientSecret);
+        String refreshToken = "1232131";
+        api.refreshAccessToken(refreshToken);
+    }
+
     /**
      * Returns response from any specified resource.
      *
@@ -109,6 +143,12 @@ public class DefaultApiTest {
         String resource = "currencies";
         Object response = api.defaultGet(resource);
         assertNotNull(response);
+    }
+
+    @Test(expected = ApiException.class)
+    public void defaultGetTestFailsIfResourceIsInvalid() throws ApiException {
+        String resource = "test123";
+        api.defaultGet(resource);
     }
 
     /**
@@ -133,6 +173,50 @@ public class DefaultApiTest {
         assertNotNull(response);
     }
 
+
+    @Test(expected = ApiException.class)
+    public void defaultPostTestFailsIfBodyIsInvalid() throws ApiException {
+        String resource = "items";
+        ItemJson body = new ItemJson();
+        body.title("TEST TITLE");
+        body.listingTypeId("gold_special");
+        body.price(10);
+        api.defaultPost(accessToken, resource, body);
+    }
+
+    @Test(expected = ApiException.class)
+    public void defaultPostTestFailsIfResourceIsInvalid() throws ApiException {
+        String resource = "123test";
+        ItemJson body = new ItemJson();
+        body.title("TEST TITLE");
+        body.listingTypeId("gold_special");
+        body.price(10);
+        body.categoryId("MLA3530");
+        body.buyingMode("buy_it_now");
+        body.currencyId("ARS");
+        body.condition("new");
+        body.availableQuantity(2);
+        body.siteId("MLA");
+        api.defaultPost(accessToken, resource, body);
+    }
+
+    @Test(expected = ApiException.class)
+    public void defaultPostTestFailsIfAccessTokenIsNull() throws ApiException {
+        String accessToken = null;
+        String resource = "items";
+        ItemJson body = new ItemJson();
+        body.title("TEST TITLE");
+        body.listingTypeId("gold_special");
+        body.price(10);
+        body.categoryId("MLA3530");
+        body.buyingMode("buy_it_now");
+        body.currencyId("ARS");
+        body.condition("new");
+        body.availableQuantity(2);
+        body.siteId("MLA");
+        api.defaultPost(accessToken, resource, body);
+    }
+
     /**
      * Update an object.
      *
@@ -140,12 +224,29 @@ public class DefaultApiTest {
      */
     @Test
     public void defaultPutTest() throws ApiException {
-        String id = null;
+        String id = "MLA742781879";
         String resource = "items";
         ItemJson body = new ItemJson();
         body.price(100);
         Object response = api.defaultPut(resource, id, accessToken, body);
         assertNotNull(response);
+    }
+
+    @Test(expected = ApiException.class)
+    public void defaultPutTestFailsIfIdIsNull() throws ApiException {
+        String id = null;
+        String resource = "items";
+        ItemJson body = new ItemJson();
+        body.price(100);
+        api.defaultPut(resource, id, accessToken, body);
+    }
+
+    @Test(expected = ApiException.class)
+    public void defaultPutTestFailsIfBodyIsNull() throws ApiException {
+        String id = "MLA123456";
+        String resource = "items";
+        ItemJson body = null;
+        api.defaultPut(resource, id, accessToken, body);
     }
 
     /**
@@ -155,10 +256,24 @@ public class DefaultApiTest {
      */
     @Test
     public void defaultDeleteTest() throws ApiException {
-        String id = null;
-        String resource = null;
+        String id = "MLA123456";
+        String resource = "users/me/bookmarks";
         Object response = api.defaultDelete(resource, id, accessToken);
         assertNotNull(response);
+    }
+
+    @Test(expected = ApiException.class)
+    public void defaultDeleteTestFailsIfIdIsNull() throws ApiException {
+        String id = null;
+        String resource = "questions";
+        api.defaultDelete(resource, id, accessToken);
+    }
+
+    @Test(expected = ApiException.class)
+    public void defaultDeleteTestFailsIfMethodNotAuthorized() throws ApiException {
+        String id = "MLA742781879";
+        String resource = "items";
+        api.defaultDelete(resource, id, accessToken);
     }
 
     /**
@@ -166,12 +281,19 @@ public class DefaultApiTest {
      *
      * @throws ApiException if the Api call fails
      */
+
     @Test
     public void categoriesCategoryIdGetTest() throws ApiException {
         String categoryId = "MLA3530";
         CategoryResponse response = api.categoriesCategoryIdGet(categoryId);
         assertNotNull(response);
         assertEquals(categoryId, response.getId());
+    }
+
+    @Test(expected = ApiException.class)
+    public void categoriesCategoryIdGetTestFailsIfCategoryIsInvalid() throws ApiException {
+        String categoryId = "MLA123";
+        api.categoriesCategoryIdGet(categoryId);
     }
 
     /**
@@ -181,10 +303,16 @@ public class DefaultApiTest {
      */
     @Test
     public void itemsItemIdGetTest() throws ApiException {
-        String itemId = "MLA652266260";
+        String itemId = "MLA742781879";
         ItemResponse response = api.itemsItemIdGet(itemId, accessToken);
         assertNotNull(response);
         assertEquals(itemId, response.getId());
+    }
+
+    @Test(expected = ApiException.class)
+    public void itemsItemIdGetTestFailsIfItemIdIsInvalid() throws ApiException {
+        String itemId = "MLA12321";
+        api.itemsItemIdGet(itemId, accessToken);
     }
 
     /**
@@ -194,13 +322,38 @@ public class DefaultApiTest {
      */
     @Test
     public void itemsItemIdPutTest() throws ApiException {
-        String itemId = null;
+        String itemId = "MLA742781879";
         ItemJson body = new ItemJson();
-        body.price(100);
+        body.price(10);
         ItemResponse response = api.itemsItemIdPut(itemId, accessToken, body);
         assertNotNull(response);
         assertEquals(itemId, response.getId());
         assertEquals(body.getPrice(), response.getPrice());
+    }
+
+    @Test(expected = ApiException.class)
+    public void itemsItemIdPutTestFailsIfItemIdInvalid() throws ApiException {
+        String itemId = null;
+        ItemJson body = new ItemJson();
+        body.price(100);
+        api.itemsItemIdPut(itemId, accessToken, body);
+    }
+
+    @Test(expected = ApiException.class)
+    public void itemsItemIdPutTestFailsIfFieldCantBeUpdated() throws ApiException {
+        String itemId = "null";
+        ItemJson body = new ItemJson();
+        body.categoryId("MLA123");
+        api.itemsItemIdPut(itemId, accessToken, body);
+    }
+
+    @Test(expected = ApiException.class)
+    public void itemsItemIdPutTestFailsIfAccessTokenNull() throws ApiException {
+        String accessToken = null;
+        String itemId = "MLA742781879";
+        ItemJson body = new ItemJson();
+        body.price(100);
+        api.itemsItemIdPut(itemId, accessToken, body);
     }
 
     /**
@@ -228,6 +381,32 @@ public class DefaultApiTest {
         assertEquals(body.getCategoryId(), response.getCategoryId());
     }
 
+    @Test(expected = ApiException.class)
+    public void itemsPostTestFailsIfBodyIsInvalid() throws ApiException {
+        ItemJson body = new ItemJson();
+        body.title("TEST TITLE");
+        body.listingTypeId("gold_special");
+        body.price(10);
+        api.itemsPost(accessToken, body);
+    }
+
+
+    @Test(expected = ApiException.class)
+    public void itemsPostTestFailsIfAcccessTokenIsNull() throws ApiException {
+        String accessToken = null;
+        ItemJson body = new ItemJson();
+        body.title("TEST TITLE");
+        body.listingTypeId("gold_special");
+        body.price(10);
+        body.categoryId("MLA3530");
+        body.buyingMode("buy_it_now");
+        body.currencyId("ARS");
+        body.condition("new");
+        body.availableQuantity(2);
+        body.siteId("MLA");
+        api.itemsPost(accessToken, body);
+    }
+
     /**
      * Validate the JSON before listing an item.
      *
@@ -249,6 +428,16 @@ public class DefaultApiTest {
         assertNull(response);
     }
 
+
+    @Test(expected = ApiException.class)
+    public void itemsValidatePostTestFailsIfBodyIsInvalid() throws ApiException {
+        ItemJson body = new ItemJson();
+        body.title("TEST TITLE");
+        body.listingTypeId("gold_special");
+        body.price(10);
+        api.itemsValidatePost(accessToken, body);
+    }
+
     /**
      * Get a message by ID.
      *
@@ -256,10 +445,16 @@ public class DefaultApiTest {
      */
     @Test
     public void messagesMessageIdGetTest() throws ApiException {
-        String messageId = null;
+        String messageId = "";
         Message response = api.messagesMessageIdGet(accessToken, messageId);
         assertNotNull(response);
         assertEquals(messageId, response.getMessageId());
+    }
+
+    @Test(expected = ApiException.class)
+    public void messagesMessageIdGetTestFailsIfMessageIdIsInvalid() throws ApiException {
+        String messageId = "123abc";
+        api.messagesMessageIdGet(accessToken, messageId);
     }
 
     /**
@@ -269,11 +464,24 @@ public class DefaultApiTest {
      */
     @Test
     public void messagesOrdersOrderIdGetTest() throws ApiException {
-        Integer orderId = null;
+        Integer orderId = 1649128570;
         MessageSearchResults response = api.messagesOrdersOrderIdGet(accessToken, orderId);
         assertNotNull(response);
         assertNotNull(response.getResults());
         assertTrue("Total must be >= 0", response.getPaging().getTotal() >= 0);
+    }
+
+    @Test(expected = ApiException.class)
+    public void messagesOrdersOrderIdGetTestFailsIfOrderIdIsInvalid() throws ApiException {
+        Integer orderId = 123456;
+        api.messagesOrdersOrderIdGet(accessToken, orderId);
+    }
+
+    @Test(expected = ApiException.class)
+    public void messagesOrdersOrderIdGetTestFailsIfAccessTokenIsNull() throws ApiException {
+        String accessToken = null;
+        Integer orderId = 123456;
+        api.messagesOrdersOrderIdGet(accessToken, orderId);
     }
 
     /**
@@ -312,6 +520,52 @@ public class DefaultApiTest {
         assertEquals(body.getText().getPlain(), response.get(0).getText().getPlain());
     }
 
+    @Test(expected = ApiException.class)
+    public void messagesPostTestFailsIfAccessTokenIsInvalid() throws ApiException {
+        String accessToken = "123ABC";
+        MessageJSON body = new MessageJSON();
+
+        From sender = new From();
+        sender.userId(null);
+
+        List<To> receivers = new ArrayList<>();
+
+        To receiver = new To();
+        receiver.userId(null);
+        receiver.siteId("MLA");
+        receiver.resource("orders");
+        receiver.resourceId(null);
+
+        receivers.add(0, receiver);
+
+        Text text = new Text();
+        text.plain("TEST MESSAGE");
+
+        body.from(sender);
+        body.to(receivers);
+        body.text(text);
+        api.messagesPost(accessToken, body);
+    }
+
+
+    @Test(expected = ApiException.class)
+    public void messagesPostTestFailsIfBodyIsInvalid() throws ApiException {
+        MessageJSON body = new MessageJSON();
+
+        From sender = new From();
+        sender.userId(null);
+
+        List<To> receivers = new ArrayList<>();
+
+        Text text = new Text();
+        text.plain("TEST MESSAGE");
+
+        body.from(sender);
+        body.to(receivers);
+        body.text(text);
+        api.messagesPost(accessToken, body);
+    }
+
 
     /**
      * Get an order by ID.
@@ -320,9 +574,22 @@ public class DefaultApiTest {
      */
     @Test
     public void ordersOrderIdGetTest() throws ApiException {
-        Integer orderId = null;
+        Integer orderId = 123456;
         Object response = api.ordersOrderIdGet(accessToken, orderId);
         assertNotNull(response);
+    }
+
+    @Test(expected = ApiException.class)
+    public void ordersOrderIdGetTestFailsIfOrderIdIsInvalid() throws ApiException {
+        Integer orderId = 123;
+        api.ordersOrderIdGet(accessToken, orderId);
+    }
+
+    @Test(expected = ApiException.class)
+    public void ordersOrderIdGetTestFailsIfAccessTokenIsInvalid() throws ApiException {
+        Integer orderId = 123456;
+        String accessToken = "123ABC";
+        api.ordersOrderIdGet(accessToken, orderId);
     }
 
     /**
@@ -332,13 +599,31 @@ public class DefaultApiTest {
      */
     @Test
     public void ordersSearchGetTest() throws ApiException {
-        Integer buyer = null;
+        Integer buyer = 345247525;
         Integer seller = null;
         Integer offset = null;
         Integer limit = null;
         Object response = api.ordersSearchGet(accessToken, buyer, seller, offset, limit);
         assertNotNull(response);
-        System.out.println(response);
+    }
+
+    @Test(expected = ApiException.class)
+    public void ordersSearchGetTestFailsIfAccessTokenIsInvalid() throws ApiException {
+        String accessToken = "123ABC";
+        Integer buyer = 345247525;
+        Integer seller = null;
+        Integer offset = null;
+        Integer limit = null;
+        api.ordersSearchGet(accessToken, buyer, seller, offset, limit);
+    }
+
+    @Test(expected = ApiException.class)
+    public void ordersSearchGetTestFailsIfAllParamsAreNull() throws ApiException {
+        Integer buyer = null;
+        Integer seller = null;
+        Integer offset = null;
+        Integer limit = null;
+        api.ordersSearchGet(accessToken, buyer, seller, offset, limit);
     }
 
     /**
@@ -348,7 +633,24 @@ public class DefaultApiTest {
      */
     @Test
     public void shipmentsShipmentIdGetTest() throws ApiException {
-        Long shipmentId = null;
+        Long shipmentId = 123L;
+        Shipment response = api.shipmentsShipmentIdGet(accessToken, shipmentId);
+        assertNotNull(response);
+        assertEquals(shipmentId, response.getId());
+    }
+
+    @Test(expected = ApiException.class)
+    public void shipmentsShipmentIdGetTestFailsIfShipmentIdIsInvalid() throws ApiException {
+        Long shipmentId = 1234L;
+        Shipment response = api.shipmentsShipmentIdGet(accessToken, shipmentId);
+        assertNotNull(response);
+        assertEquals(shipmentId, response.getId());
+    }
+
+    @Test(expected = ApiException.class)
+    public void shipmentsShipmentIdGetTestFailsIfAccessTokenIsInvalid() throws ApiException {
+        String accessToken = "123ABC";
+        Long shipmentId = 123L;
         Shipment response = api.shipmentsShipmentIdGet(accessToken, shipmentId);
         assertNotNull(response);
         assertEquals(shipmentId, response.getId());
@@ -375,7 +677,7 @@ public class DefaultApiTest {
     @Test
     public void sitesSiteIdCategoryPredictorPredictGetTest() throws ApiException {
         String siteId = "MLA";
-        String title = "Ipod Touch 6";
+        String title = "Ipod Touch 6 32GB";
         CategoryPrediction response = api.sitesSiteIdCategoryPredictorPredictGet(siteId, title);
         assertNotNull(response);
         assertNotNull(response.getId());
@@ -396,6 +698,12 @@ public class DefaultApiTest {
         assertEquals(siteId, response.getId());
     }
 
+    @Test(expected = ApiException.class)
+    public void sitesSiteIdGetTestFailsIfSiteIdIsInvalid() throws ApiException {
+        String siteId = "M2A";
+        api.sitesSiteIdGet(siteId);
+    }
+
     /**
      * Return account information about the authenticated user.
      *
@@ -403,10 +711,15 @@ public class DefaultApiTest {
      */
     @Test
     public void usersMeGetTest() throws ApiException {
-        Integer userId = null;
+        Integer userId = 345247525;
         UserResponse response = api.usersMeGet(accessToken);
         assertNotNull(response);
         assertEquals(userId, response.getId());
+    }
+
+    @Test(expected = ApiException.class)
+    public void usersMeGetTestFailsIfAccessTokenIsInvalid() throws ApiException {
+        api.usersMeGet(accessToken);
     }
 
     /**
@@ -416,7 +729,24 @@ public class DefaultApiTest {
      */
     @Test
     public void usersUserIdGetTest() throws ApiException {
-        Integer userId = null;
+        Integer userId = 345247525;
+        UserResponse response = api.usersUserIdGet(userId, accessToken);
+        assertNotNull(response);
+        assertEquals(userId, response.getId());
+    }
+
+    @Test(expected = ApiException.class)
+    public void usersUserIdGetTestFailsIfUserIsInvalid() throws ApiException {
+        Integer userId = 12345;
+        UserResponse response = api.usersUserIdGet(userId, accessToken);
+        assertNotNull(response);
+        assertEquals(userId, response.getId());
+    }
+
+    @Test(expected = ApiException.class)
+    public void usersUserIdGetTestFailsIfAccessTokenIsInvalid() throws ApiException {
+        Integer userId = 345247525;
+        String accessToken = "123ABC";
         UserResponse response = api.usersUserIdGet(userId, accessToken);
         assertNotNull(response);
         assertEquals(userId, response.getId());

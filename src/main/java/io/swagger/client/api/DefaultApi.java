@@ -79,20 +79,27 @@ public class DefaultApi {
      * @param authUrl:  The authorization URL. Get from Meli.AuthUrls
      * @return the authorization URL
      */
-    public String getAuthUrl(String callback, Configuration.AuthUrls authUrl) {
+    public String getAuthUrl(String redirectUri, Configuration.AuthUrls authUrl) throws ApiException {
+
+        // verify the required parameter 'redirectUri' is set
+        if (redirectUri == null) {
+            throw new ApiException(400, "Missing the required parameter 'redirectUri' when calling getAuthUrl");
+        }
+
+        // verify the required parameter 'authUrl' is set
+        if (authUrl == null) {
+            throw new ApiException(400, "Missing the required parameter 'authUrl' when calling getAuthUrl");
+        }
+
         StringBuilder sb = new StringBuilder();
+        sb.append(authUrl.getValue());
+        sb.append("/authorization?response_type=code&client_id=");
+        sb.append(clientId);
+        sb.append("&redirect_uri=");
         try {
-            sb.append(authUrl.getValue());
-            sb.append("/authorization?response_type=code&client_id=");
-            sb.append(clientId);
-            sb.append("&redirect_uri=");
-            sb.append(URLEncoder.encode(callback, "UTF-8"));
+            sb.append(URLEncoder.encode(redirectUri, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            sb.append(authUrl);
-            sb.append("/authorization?response_type=code&client_id=");
-            sb.append(clientId);
-            sb.append("&redirect_uri=");
-            sb.append(callback);
+            sb.append(redirectUri);
         }
         return sb.toString();
     }
@@ -109,6 +116,16 @@ public class DefaultApi {
 /**/
     public AccessToken authorize(String code, String redirectUri) throws ApiException {
         Object localVarPostBody = null;
+
+        // verify the required parameter 'accessToken' is set
+        if (code == null) {
+            throw new ApiException(400, "Missing the required parameter 'code' when calling authorize");
+        }
+
+        // verify the required parameter 'accessToken' is set
+        if (redirectUri == null) {
+            throw new ApiException(400, "Missing the required parameter 'redirectUri' when calling authorize");
+        }
 
         // create path and map variables
         String localVarPath = "/oauth/token";
