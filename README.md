@@ -108,7 +108,7 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *DefaultApi* | [**defaultGet**] | **GET** /{resource}/{id} | Returns details about an object.
 *DefaultApi* | [**defaultPut**] | **PUT** /{resource}/{id}/attributes | Updates an object.
-*DefaultApi* | [**defaultPost**] | **POST** /{resource}/ Creates an object.
+*DefaultApi* | [**defaultPost**] | **POST** /{resource}/ | Creates an object.
 *DefaultApi* | [**defaultDelete**] | **DELETE** /{resource}/{id} | Deletes an object.
 *DefaultApi* | [**categoriesCategoryIdAttributesGet**](docs/DefaultApi.md#categoriesCategoryIdAttributesGet) | **GET** /categories/{category_id}/attributes | Returns all attributes from a category.
 *DefaultApi* | [**categoriesCategoryIdGet**](docs/DefaultApi.md#categoriesCategoryIdGet) | **GET** /categories/{category_id} | Returns information about a category.
