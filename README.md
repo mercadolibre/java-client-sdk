@@ -66,8 +66,20 @@ public class DefaultApiExample {
     private final DefaultApi api = new DefaultApi();
     
     private static void getAuthUrl() throws UnsupportedEncodingException {
-           DefaultApi api = new DefaultApi(clientId, clientSecret);
+           DefaultApi api = new DefaultApi(new ApiClient(), clientId, clientSecret);
            String response = api.getAuthUrl(redirectUri, Configuration.AuthUrls.MLA);
+    }
+    
+    private static void getAccessToken() throws UnsupportedEncodingException {
+               DefaultApi api = new DefaultApi(new ApiClient(), clientId, clientSecret);
+               String code = "{your_code}";
+               AccessToken response = api.authorize(code, redirectUri);
+    }
+     
+    private static void refreshToken() throws UnsupportedEncodingException {
+                    DefaultApi api = new DefaultApi(new ApiClient(), clientId, clientSecret);
+                    String refreshToken = "{your_refresh_token}";
+                    RefreshToken response = api.refreshAccessToken(refreshToken);
     }
     
     private static void GET() throws ApiException {
