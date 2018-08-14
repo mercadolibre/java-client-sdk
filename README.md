@@ -67,7 +67,7 @@ public class DefaultApiExample {
     
     private static void getAuthUrl() throws UnsupportedEncodingException {
            DefaultApi api = new DefaultApi(new ApiClient(), clientId, clientSecret);
-           String response = api.getAuthUrl(redirectUri, Configuration.AuthUrls.MLA);
+           String response = api.getAuthUrl(redirectUri, Configuration.AuthUrls.{your_site_id});
     }
     
     private static void getAccessToken() throws UnsupportedEncodingException {
